@@ -1,0 +1,149 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<body style="background-color: rgb(172, 176, 180);" >
+
+<div class="wrapper" style="background-color: rgb(17, 110, 79);">
+
+  <header>
+      <h1 class="title">Interface Detail Screen</h1>
+  </header><br>
+
+<div class="columns">
+    <div class="column" style="border: none;">
+      <form action="{% url 'detail' id %}">
+        {% for field in form %}
+        <div class="form-row">
+          <div class="name" style="color: black;">{{field.label_tag}} </div>
+          <div class="value">
+              <div class="input-group">
+                  {{field}}
+              </div>
+          </div>
+        </div>
+        {% endfor %}
+        <button class="btn btn-primary"  type="submit" >add detail</button>
+      </form>
+  </div>
+
+
+
+</section>
+  <footer >
+    <button class="btn btn-primary" id="fielddetail" >field detail</button>
+    <a href="{% url 'home' %}"><button  type="button" class="btn btn-primary  ">
+      go to header
+    </button></a><br><br>
+    <button class="btn btn-primary" id="detailmodify">modify detail</button>
+    <button class="btn btn-primary" >Bulk-mapping</button>
+  
+  </footer>
+  {% if user.is_authenticated %}
+  <form action="{% url 'logoutuser' %}" >
+    <button type="submit" class="btn btn-primary">
+      Logout
+    </button>
+  </form>
+  {% endif %}
+</div> 
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <table class="table table-striped  table-hover" style="table-layout: fixed;">
+      <thead>
+        <tr>
+          <th>select</th>
+          <th>Description</th>
+          <th>comments</th>
+          <th>createdon</th>
+          <th>createdby</th>
+          <th>updatedon</th>
+          <th>updatedby</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for i in interfacedetail %}
+      <tr>
+        <td ><input type="checkbox" id="int_{{i.id}}" name="cb" data="{{i.id}}" user="{{i.created_by}}"></td>
+        <td>{{i.description}}</td>
+        <td>{{i.comments}}</td>
+        <td>{{i.created_on}}</td>
+        <td>{{i.created_by}}</td>
+        <td>{{i.updated_on}}</td>
+        <td>{{i.updated_by}}</td>
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+</body>
+
+
+
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+        $(document).ready(function(){
+            //$('#detailmodify').prop('disabled', false);
+            $("#detailmodify").click(function(){ 
+   
+            var tomodify = [];
+                  $.each($("input[name='cb']:checked"), function(){
+                          tomodify.push($(this).attr('data'));
+                          
+                          var id =tomodify[0];  
+                          var url="/detail_modify";
+                          document.location.href= url  + "/" + id;
+                          
+              
+                      });
+            });
+           /* $('input[type="checkbox"]'). click(function(){
+              if($(this). prop("checked") == true){
+          
+                 $('#detailmodify').prop('disabled', false); 
+              }
+          
+              else if($(this). prop("checked") == false){
+                  $('#detailmodify').prop('disabled', true);
+              }
+        })*/
+        
+        //$('#fielddetail').prop('disabled', false);
+        $("#fielddetail").click(function(){ 
+   
+          var tomodify = [];
+                $.each($("input[name='cb']:checked"), function(){
+                        tomodify.push($(this).attr('data'));
+                        
+                        var id =tomodify[0];  
+                        var url="/field_detail";
+                        document.location.href= url  + "/" + id;
+                        
+            
+                    });
+                    //alert(tomodify[0]);
+          });
+            /*$('input[type="checkbox"]'). click(function(){
+              if($(this). prop("checked") == true){
+          
+                 $('#fielddetail').prop('disabled', false); 
+              }
+          
+              else if($(this). prop("checked") == false){
+                  $('#fielddetail').prop('disabled', true);
+              }
+        })*/
+          
+    })       
+  
+</script>
+
+{% endblock %}
+
+

@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block content %}
+
+    <div class="page-wrapper bg-gra-03 p-t-45 p-b-50">
+        <div class="wrapper wrapper--w790">
+            <div class="card card-5" >
+                <div class="card-heading">
+                    <h2 class="title">Interface Header Information</h2>
+                    <h2 class="title2" >Use this Screen to setup interface information</h2>
+                </div>
+                <div class="card-body" >
+                    <form method="POST">
+                      {% csrf_token %}
+                      {% for field in form %}
+                        <div class="form-row">
+                            <div class="name">{{field.label_tag}}</div>
+                            <div class="value">
+                                <div class="input-group">
+                                  {{field}}
+                                </div>
+                            </div>
+                        </div>
+                      {% endfor %}
+                        <div>
+                            <button class="btn btn-primary " type="submit">save</button>
+                            <a href="{% url 'home' %}" >Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>    
+
+
+<!-- end document-->
+
+
+
+
+
+
+
+
+
+
+<!-- <div class="container" style="background-color:rgb(197, 188, 139)"> 
+<center>
+<div class="form-group " style="margin-top: 4%;">
+   <h3 style="color:#4E342E;font-family: 'Mulish', sans-serif;">Interface Header Information</h3><hr style="background-color: white;height:1px;width:200px">
+      <h6>Use this Screen to setup interface information</h6><br>
+ <form method="post" class="form-horizontal">
+  {% csrf_token %}
+  {% for field in form  %}
+  <div class="row" ></div>
+    <b style="font-size: 16px;font-family: 'Mulish', sans-serif;">{{ field.label_tag }}</b>&nbsp; <b>{{ field }}</b>
+  {% endfor %}
+  <div class="form-group"><BR>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <button type="submit" class="btn btn-success">
+        <span class="glyphicon glyphicon-ok"></span> Save
+      </button>
+      <a href="{% url 'home' %}" class="btn btn-default">Cancel</a>
+    </di
+</center>
+</div> 
+</div> 
+
+
+
+
+
+<h2>Add interface</h2>
+<div class="container" style="background-color: #dfe6e9" >
+  <div class="row" style="justify-content: center;height:50%">
+    <div class="col-lg-6">
+      <form method='POST'> 
+      {% csrf_token %}
+
+      {{form.as_p}}
+
+      <input type='submit'>
+      <button type="button"><a href="{% url 'home' %}">Exit</a></button>
+    </div>
+  </div>
+</div> -->
+
+ 
+
+
+
+
+{% endblock %}

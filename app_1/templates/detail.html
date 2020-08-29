@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block content %}
+
+    <div class="page-wrapper bg-gra-03 p-t-45 p-b-50">
+        <div class="wrapper wrapper--w790">
+            <div class="card card-5" >
+                <div class="card-heading">
+                    <h2 class="title">Interface Detail Information</h2>
+                    <h2 class="title2" >Use this screen to setup interface detail</h2>
+                </div>
+                <div class="card-body" >
+                    <form method="POST">
+                      {% csrf_token %}
+                      {% for field in form %}
+                        <div class="form-row">
+                            <div class="name">{{field.label_tag}}</div>
+                            <div class="value">
+                                <div class="input-group">
+                                  {{field}}
+                                </div>
+                            </div>
+                        </div>
+                      {% endfor %}
+                        <div>
+                            <button class="btn btn-primary " type="submit">&nbsp;save&nbsp;</button>
+                            <a href="{% url 'interface_detail' id %}"  >Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>    
+
+
+
+{% endblock %}
+
+

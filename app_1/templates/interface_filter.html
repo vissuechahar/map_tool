@@ -1,0 +1,63 @@
+<tr>
+    <th>select</th>
+    <th>TypeName</th>
+    <th>interface</th>
+    <th>Description</th>
+    <th>Publisher</th>
+    <th>Pubschema</th>
+    <th>Subscriber</th>
+    <th>Subschema</th>
+    <th>Assignee</th>
+    <th>Assignon</th>
+    <th>Approvby</th>
+    <th>Approvon</th>
+    <th>updatedby</th>
+    <th>Updatedon</th>
+    <th>Createdby</th>
+    <th>Createdon</th>
+  </tr>
+  {% for interface in interfaces %}
+  <tr>
+      <td><input type="checkbox" id="int_{{interface.id}}" name="cb" data="{{interface.id}}" user="{{interface.created_by}}"></td>
+      <td>{{interface.interface_type.name}}</td>
+      <td>{{interface.interface}}</td>
+      <td>{{interface.description}}</td>
+      <td>{{interface.publisher}}</td>
+      <td>{{interface.publisher_schema}}</td>
+      <td>{{interface.subscriber}}</td>
+      <td>{{interface.subscriber_schema}}</td>
+      <td id="assignee{{interface.id}}">
+       {% if interface.assignee != None %}
+        {{interface.assignee}}
+       {% else %}
+
+       {% endif %}
+       </td>  
+      <td id="assignon{{interface.id}}">
+       {% if interface.assignee != None %}
+        {{interface.assign_on}}
+       {% else %}
+
+       {% endif %}
+     </td>
+      <td id="by{{interface.id}}">
+       {% if interface.approve_by != None %}
+           {{interface.approve_by}}
+       {% else %}
+         
+       {% endif %}
+   </td>
+   <td id="on{{interface.id}}">
+       {% if interface.approve_by != None %}
+           {{interface.approve_on}}
+       {% else %}
+         
+       {% endif %}
+   </td>
+      
+      <td>{{interface.updated_by}}</td>
+      <td>{{interface.updated_on}}</td>
+      <td>{{interface.created_by}}</td>
+      <td>{{interface.created_on}}</td>
+  </tr>
+  {% endfor %}

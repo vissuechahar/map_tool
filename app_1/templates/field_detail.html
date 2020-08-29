@@ -1,0 +1,322 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="wrapper"  >
+	<header>
+		<h4 class="title3">Field Deatail</h4>
+    </header>
+<form method="POST">
+{% csrf_token %}
+<section class="columns" >
+	<div class="column">
+        <h5>Publisher:</h5>
+		<div class="form-row">
+            <div class="name"> Table </div>
+            <div class="value">
+                <div class="input-group">
+                    {{form.pub_table}}
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="name">Column</div>
+            <div class="value">
+                <div class="input-group">
+                    {{form.pub_column}}
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="name">Field Type</div>
+            <div class="value">
+                <div class="input-group">
+                    {{form.pub_field_type}}
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="name">Field Len</div>
+            <div class="value">
+                <div class="input-group">
+                    {{form.pub_field_length}}
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="name">Seq</div>
+            <div class="value">
+                <div class="input-group">
+                    {{form.pub_column_seq}}
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="name">Properties</div>
+            <div class="value">
+                <div class="input-group">
+                    {{form.pub_properties}}
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="name">Default</div>
+            <div class="value">
+                <div class="input-group">
+                    {{form.pub_default_value}}
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="name">Min</div>
+            <div class="value">
+                <div class="input-group">
+                    {{form.pub_min_occurs}}
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="name">Max</div>
+            <div class="value">
+                <div class="input-group">
+                    {{form.pub_max_occurs}}
+                </div>
+            </div>
+        </div>
+	</div>
+	
+	<div class="column">
+		<h5>Subscriber:</h5>
+		<div class="form-row">
+            <div class="name">Table</div>
+            <div class="value">
+                <div class="input-group">
+                    {{form.sub_table}}
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="name">Column</div>
+            <div class="value">
+                <div class="input-group">
+                    {{form.sub_column}}
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="name">Field Type</div>
+            <div class="value">
+                <div class="input-group">
+                    {{form.sub_field_type}}
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="name">Field Len</div>
+            <div class="value">
+                <div class="input-group">
+                    {{form.sub_field_length}}
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="name">Seq</div>
+            <div class="value">
+                <div class="input-group">
+                    {{form.sub_column_seq}}
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="name">Properties</div>
+            <div class="value">
+                <div class="input-group">
+                    {{form.sub_properties}}
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="name">Default</div>
+            <div class="value">
+                <div class="input-group">
+                    {{form.sub_default_value}}
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="name">Min</div>
+            <div class="value">
+                <div class="input-group">
+                    {{form.sub_min_occurs}}
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="name">Max</div>
+            <div class="value">
+                <div class="input-group">
+                    {{form.sub_max_occurs}}
+                </div>
+            </div>
+        </div>
+	</div>
+  
+  <div class="column">
+		<h5>Other attributes:</h5>
+		<div class="form-row">
+            <div class="name">Conversion rule</div>
+            <div class="value">
+                <div class="input-group">
+                    {{form.Conversion_rule}}
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="name">Comments</div>
+            <div class="value">
+                <div class="input-group">
+                    {{form.Comments}}
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="name">Updated by</div>
+            <div class="value">
+                <div class="input-group">
+                    {{form.Updated_by}}
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="name">Updated on</div>
+            <div class="value">
+                <div class="input-group">
+                    {{form.Updated_on}}
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="name">Created by</div>
+            <div class="value">
+                <div class="input-group">
+                    {{form.Created_by}}
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="name">Created on</div>
+            <div class="value">
+                <div class="input-group">
+                    {{form.Created_on}}
+                </div>
+            </div>
+        </div>
+        <div>
+            <button class="btn btn-primary" type="submit"> Save</button>
+            <a href="{% url 'interface_detail' id %}">Exit</a>
+                <a href="{% url 'field_detail' id  %}">Cancel</a>
+        </div>
+        
+    </div>
+</section>	
+</form> 
+</div>
+
+<div class="row2">
+        <table class="table table-hover table-sm ">
+            <thead>
+                <tr>
+                    <th>Seq</th>
+                    <th>Table</th>
+                    <th>Column</th>
+                    <th>Type</th>
+                    <th>Len</th>
+                    <th>Property</th>
+                    <th>Default</th>
+                    <th>Min</th>
+                    <th>Max</th>
+                    <th>Conversion</th>
+                    <th>Seq</th>
+                    <th>Table</th>
+                    <th>Column</th>
+                    <th>Type</th>
+                    <th>Len</th>
+                    <th>Property</th>
+                    <th>Default</th>
+                    <th>Min</th>
+                    <th>Max</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for fd in if_details %}
+                <tr class="table-default">
+                            <td>{{fd.pub_column_seq}}</td>
+                            <td>{{fd.pub_table}}</td>
+                            <td>{{fd.pub_column}}</td>
+                            <td>{{fd.pub_field_type}}</td>
+                            <td>{{fd.pub_field_length}}</td>
+                            <td>{{fd.pub_properties}}</td>
+                            <td>{{fd.pub_default_value}}</td>
+                             <td>{{fd.pub_min_occurs}}</td>
+                            <td>{{fd.pub_max_occurs}}</td>
+                            <td>{{fd.Conversion_rule}}</td>
+                            <td>{{fd.sub_column_seq}}</td>
+                            <td>{{fd.sub_table}}</td>
+                            <td>{{fd.sub_column}}</td>
+                            <td>{{fd.sub_field_type}}</td>
+                            <td>{{fd.sub_field_length}}</td>
+                            <td>{{fd.sub_properties}}</td>
+                            <td>{{fd.sub_default_value}}</td>
+                            <td>{{fd.sub_min_occurs}}</td>
+                            <td>{{fd.sub_max_occurs}}</td>
+
+                        </tr>
+                    {% endfor %}
+                </tbody>
+        </table>
+    </div>
+
+
+
+
+
+
+<style>
+    .table{
+        background-color: rgb(212, 212, 224);
+        border: none;
+    }
+    body{
+        background-color: #ffd89b;
+    }
+    .wrapper{
+        background-color: rgb(212, 212, 224);
+    }
+    .column{
+        border: none;
+    }
+    .title3{
+        color: white;
+        font-weight: 700;
+        font-size: 24px;
+        text-align: center;
+    }
+    header{
+        background-color: black;
+    }
+    h5{
+        font-size: 17px;
+        font-weight: 700;
+    }
+ 
+</style>
+    
+
+
+
+
+
+
+
+
+{% endblock %}

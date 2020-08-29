@@ -1,0 +1,453 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content  %}
+
+
+<body  >
+
+<div class="wrapper">
+
+  <header>
+      <h1 class="title">Interface Header Screen</h1>
+  </header><br>
+
+<div class="columns">
+    <div class="column" style="border: none;">
+      <form action="{% url 'add_interface' %}">
+        {% for field in form %}
+        <div class="form-row">
+          <div class="name" style="color: black;">{{field.label_tag}} </div>
+          <div class="value">
+              <div class="input-group">
+                  {{field}}
+              </div>
+          </div>
+        </div>
+        {% endfor %}
+        <button class="btn btn-primary"  type="submit" >add interface</button>
+      </form>
+  </div>
+
+
+
+</section>
+  <footer >
+    <button class="btn btn-primary" id= "assign" >Assign</button>
+    <button class="btn btn-primary"  onclick="myFunction()" value="approve" id="approve">Approve</button><br><br>
+    <button class="btn btn-primary"  id="interfacedetail" > interface detail</button>
+    
+    <button class="btn btn-primary" id= "modify" >modify interface</button>
+  
+  </footer>
+  {% if user.is_authenticated %}
+  <form action="{% url 'logoutuser' %}" >
+    <button type="submit" class="btn btn-primary" >
+      Logout
+    </button>
+  </form>
+  {% endif%}
+</div> 
+</div>
+
+
+
+  <div class="row">
+    <div class="col-md-12">
+        <table class="table table-striped table-sm table-hover" id="interface_table"> 
+                <tr>
+                 <th>select</th>
+                 <th>TypeName</th>
+                 <th>interface</th>
+                 <th>Description</th>
+                 <th>Publisher</th>
+                 <th>Pubschema</th>
+                 <th>Subscriber</th>
+                 <th>Subschema</th>
+                 <th>Assignee</th>
+                 <th>Assignon</th>
+                 <th>Approver</th>
+                 <th>Approveron</th>
+                 <th>Updatedby</th>
+                 <th>Updatedon</th>
+                 <th>Createdby</th>
+                 <th>Createdon</th>
+               </tr>
+               {% for interface in interfaces %}
+               <tr>
+                   <td><input type="checkbox" id="int_{{interface.id}}" name="cb" data="{{interface.id}}" user="{{interface.created_by}}"></td>
+                   <td>{{interface.interface_type.name}}</td>
+                   <td>{{interface.interface}}</td>
+                   <td>{{interface.description}}</td>
+                   <td>{{interface.publisher}}</td>
+                   <td>{{interface.publisher_schema}}</td>
+                   <td>{{interface.subscriber}}</td>
+                   <td>{{interface.subscriber_schema}}</td>
+                   <td id="assignee{{interface.id}}">
+                    {% if interface.assignee != None %}
+                     {{interface.assignee}}
+                    {% else %}
+
+                    {% endif %}
+                    </td>  
+                   <td id="assignon{{interface.id}}">
+                    {% if interface.assignee != None %}
+                     {{interface.assign_on}}
+                    {% else %}
+
+                    {% endif %}
+                  </td>
+                   <td id="by{{interface.id}}">
+                    {% if interface.approve_by != None %}
+                        {{interface.approve_by}}
+                    {% else %}
+                      
+                    {% endif %}
+                </td>
+                <td id="on{{interface.id}}">
+                    {% if interface.approve_by != None %}
+                        {{interface.approve_on}}
+                    {% else %}
+                      
+                    {% endif %}
+                </td>
+                   
+                   <td>{{interface.updated_by}}</td>
+                   <td>{{interface.updated_on}}</td>
+                   <td>{{interface.created_by}}</td>
+                   <td>{{interface.created_on}}</td>
+               </tr>
+               {% endfor %}
+            </table>
+</div>
+
+<div class="modal" id="AssignModal">
+    <div class="modal-content">
+
+        <span class="close">&times;</span>
+        <button id="search" class="btn btn-info">Search Assignee</button>
+      <form>
+          <table>
+            {% csrf_token %}
+            {{assigneeform}}
+          </table>
+          <button type="button" id="modalassign" class="btn btn-outline-success">Assign</button>
+      </form>
+    </div>
+</div>
+
+<div class="modal" id="searchassignee">
+    <div class="modal-content">
+
+        <span class="close">&times;</span>
+      <table>
+          {% for user in users %}
+          
+            <tr>
+                
+                    <td style="background-color: burlywood;"><a data="{{user}}" data_fname="{{user.first_name}}" 
+                        data_lname="{{user.last_name}}"
+                        data_active="{{user.is_active}}"
+                        data_company= "{{user.profile.company_name}}"
+                        
+                        class="select_user" href="#">{{user.first_name}}</a></td>
+                    <td style="background-color: burlywood;">{{user.last_name}}</td>
+                
+            </tr>
+        
+
+          {% endfor %}
+      </table>
+    </div>
+</div>
+
+<!-- js/ajax -->
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script>
+  $(document).ready(function(){
+    var  assignee;
+    $('#id_interface_type').change(function(){
+      var id = $(this).val();
+      $.ajax({
+        url:'/interface_filter',
+        data:{'id':id},
+        success:function(data){
+          $('#interface_table').html(data.html);
+        }
+      });
+
+    });
+   $('#approve').prop('disabled', true);
+   $('#assign').prop('disabled', true);
+   $('#modify').prop('disabled', false);
+   $('#interfacedetail').prop('disabled', false);
+   
+   $("#AssignModal").css('display',"none");
+   
+   $(".close").click(function(){
+        $("#AssignModal").css('display',"none");
+        $("#searchassignee").css('display',"none");
+   });
+
+   $(".select_user").click(function(){
+        event.preventDefault();
+        $('#id_username').val($(this).attr('data'));
+        $('#id_first_name').val($(this).attr('data_fname'));
+        $('#id_last_name').val($(this).attr('data_lname'));
+        $('#id_is_active').val($(this).attr('data_active'));
+        $('#id_company_name').val($(this).attr('data_company'));
+        $("#searchassignee").css('display',"none");
+   });
+
+    $("#assign").click(function(){
+        $("#AssignModal").css('display',"block");
+    });
+
+    $("#search").click(function(){
+        $("#searchassignee").css('display',"block");
+    });
+
+
+    $("#modalassign").click(function(){
+      event.preventDefault();
+      assignee = $('#id_username').val();
+      
+      var tomodify = [];
+      var user=[];
+          $.each($("input[name='cb']:checked"), function(){
+                  tomodify.push($(this).attr('data'));
+                  user.push($(this).attr('user'));      
+      
+              });
+              $.ajax({
+                url: "/assign/",
+                data : {'interface':tomodify[0],'assignee':assignee}, 
+                success: function(result)
+                {
+                     
+                     $('#assignee'+tomodify[0]).html(result.user);
+                                
+                      $('#assignon'+tomodify[0]).html(result.date);
+             
+              
+                      $('#approve').prop('disabled', true);
+                      $('#assign').prop('disabled', true);
+                      $("#AssignModal").css('display',"none");
+                      $("#int_"+tomodify[0]). prop("checked", false);
+
+                }
+    });
+
+    });
+
+
+   $("#approve").click(function(){
+    
+   
+    var tomodify = [];
+    var user=[];
+          $.each($("input[name='cb']:checked"), function(){
+                  tomodify.push($(this).attr('data'));
+                  user.push($(this).attr('user'));      
+      
+              });
+             //alert(tomodify[0]);
+                           
+      $.ajax({
+      url: "/approve/",
+      data : {'interface':tomodify[0]}, 
+      success: function(result)
+      {
+             // alert(result.user,result.date);
+              $('#by'+tomodify[0]).html(result.user);
+             
+              if(result.user==null)
+              {
+               $('#on'+tomodify[0]).html("");
+              }
+              else{
+                $('#on'+tomodify[0]).html(result.date);
+              }
+              
+              $('#approve').prop('disabled', true);
+              $('#assign').prop('disabled', true);
+              $("#int_"+tomodify[0]). prop("checked", false);
+
+          }
+    });
+    });
+
+    $('table').on('click','input[type="checkbox"]',function(){
+     if($(this). prop("checked") == true){
+
+        $('#approve').prop('disabled', false);
+        $('#assign').prop('disabled',false)
+
+        }
+     else if($(this). prop("checked") == false){
+        $('#approve').prop('disabled', true); 
+        $('#assign').prop('disabled', true);
+     }
+   });
+  
+
+  $("#interfacedetail").click(function(){ 
+   
+    var tomodify = [];
+          $.each($("input[name='cb']:checked"), function(){
+                  tomodify.push($(this).attr('data'));
+                  
+                  var id =tomodify[0];  
+                  var url="/interface_detail";
+                  document.location.href= url  + "/" + id;
+                  
+      
+              });
+          //alert(tomodify[0]);
+    });
+    /*$('table').on('click','input[type="checkbox"]',function(){
+      if($(this). prop("checked") == true){
+  
+         $('#interfacedetail').prop('disabled', false); 
+      }
+  
+      else if($(this). prop("checked") == false){
+          $('#interfacedetail').prop('disabled', true);
+      }
+     })*/
+
+  /* modify*/
+
+  $("#modify").click(function(){ 
+   
+    var tomodify = [];
+          $.each($("input[name='cb']:checked"), function(){
+                  tomodify.push($(this).attr('data'));
+                  
+                  var id =tomodify[0];  
+                  var url="/modify";
+                  document.location.href= url  + "/" + id;
+                  
+      
+              });
+          //alert(tomodify[0]);
+    });
+    /*$('table').on('click','input[type="checkbox"]',function(){
+      if($(this). prop("checked") == true){
+  
+         $('#modify').prop('disabled', false); 
+      }
+  
+      else if($(this). prop("checked") == false){
+          $('#modify').prop('disabled', true);
+      }
+     })*/
+  
+    });
+  
+    function myFunction() {
+
+      var btn = document.getElementById("approve");
+  
+      if (btn.value == "approve") {
+          btn.value = "un-approve";
+          btn.innerHTML = "un-approve";
+      }
+      else {
+          btn.value = "approve";
+          btn.innerHTML = "approve";
+      }
+  
+  }
+
+  </script>
+
+
+<style>
+  body {font-family: Arial, Helvetica, sans-serif;}
+  
+  /* The Modal (background) */
+  .modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  }
+  
+  /* Modal Content */
+  .modal-content {
+    background-color: #e4e0e0;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+  }
+  
+  /* The Close Button */
+  .close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+  
+  .close:hover,
+  .close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  table{
+    table-layout: fixed;
+  }
+  @media screen and (max-width: 680px) {
+    .columns .column {
+      flex-basis: 100%;
+      margin: 0 0 5px 0;
+    }
+    .table{
+      table-layout: auto;
+    }
+  }
+  @media screen and (max-width: 980px) {
+    .columns .column {
+      margin-bottom: 5px;
+      flex-basis: 40%;
+    }
+  }
+  body{
+    background-color: rgb(201, 198, 196);
+  }
+  .wrapper{
+    background-color: rgba(19, 22, 27, 0.411);;
+  }
+  .btn{
+    background-color: rgb(74, 105, 172);
+  }
+
+  </style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% endblock %}
